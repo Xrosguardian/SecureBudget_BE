@@ -18,7 +18,23 @@ logger = logging.getLogger(__name__)
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, 
+         resources={
+             r"/api/": {
+                 "origins": [
+                     "http://localhost:5173/",
+                     "http://localhost:3000/", 
+                     "https://secure-budget-fe.vercel.app/",  # Replace with your actual Vercel URL
+                     "https://secure-budget-fe.vercel.app/"
+                 ],
+                 "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                 "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+                 "expose_headers": ["Content-Range", "X-Content-Range"],
+                 "supports_credentials": False,
+                 "max_age": 600
+             }
+             })
+
     
     # Configuration - get from environment variables
     app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
